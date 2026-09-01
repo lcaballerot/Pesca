@@ -48,17 +48,6 @@ El `.jar` queda en `target/Pesca-1.0.0.jar`.
 - `config-actual/` — los ficheros de configuración **en uso ahora mismo** en el servidor de
   MineToy (`config.yml`, `messages.yml`, `area.yml`), para referencia.
 
-## Sobre la velocidad de pesca
-
-Pesca **no modifica la velocidad de la pesca vanilla**. El listener solo reacciona en el
-instante `CAUGHT_FISH` (después de que el pez ya picó) y únicamente **cambia el objeto
-capturado**; no llama a ningún método de temporización del anzuelo
-(`setWaitTime` / `setMinWaitTime` / `setMaxWaitTime` / `setApplyLure` / `setBiteChance`).
-Lo único que puede hacer que alguien pesque más rápido es un objeto normal del juego: la
-**caña experta** de la tienda lleva el encantamiento vanilla **Atracción (Lure) III**,
-idéntico a encantarla en un yunque.
-
-Documentación detallada (ES): ver la guía técnica del plugin.
 
 ---
 
