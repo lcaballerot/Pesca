@@ -1,0 +1,530 @@
+# ============================================================================
+#  Pesca — MineToy
+# ============================================================================
+#  Texto en minusculas normales. El plugin lo convierte a VERSALITAS al mostrarlo
+#  (ver `small-caps` mas abajo), respetando etiquetas <color>, {placeholders} y
+#  literales entre `backticks`. Escribe normal, se ve como el resto del servidor.
+# ============================================================================
+
+# Convierte automaticamente todo el texto visible a versalitas unicode.
+# Los acentos se pierden (no existe versalita acentuada) y la ñ se deja tal cual.
+small-caps: true
+
+# ---------------------------------------------------------------------------
+#  Pesca
+# ---------------------------------------------------------------------------
+fishing:
+  # Solo se reemplaza la captura cuando el pez vanilla era un pez de verdad.
+  # Con `false` tambien se reemplazan basura y tesoros dentro del area.
+  only-replace-vanilla-fish: true
+
+  # Curva del peso. 1.0 = uniforme. Valores mas altos hacen que los ejemplares
+  # grandes sean cada vez mas raros. 2.4 da una distribucion agradable.
+  weight-curve: 2.4
+
+  # Efectos al capturar. Clave de sonido de minecraft, no el nombre del enum.
+  effects:
+    sound: 'minecraft:entity.player.levelup'
+    # Solo suena si la rareza da al menos estos puntos. 0 = siempre suena.
+    min-points: 8
+
+  # Rarezas que se anuncian a todo el servidor al capturarlas.
+  # Respeta /pesca admin broadcasts igual que los avisos del torneo.
+  announce-rarities:
+    - legendario
+    - mitico
+
+# ---------------------------------------------------------------------------
+#  Torneo
+# ---------------------------------------------------------------------------
+tournament:
+  # Cuanto dura un torneo. Formato: 30m, 2h, 1d, 1w
+  duration: 2h
+  # Cuanto se espera desde que termina uno hasta que empieza el siguiente.
+  frequency: 1d
+  # true / false / debug  — se puede cambiar en caliente con /pesca admin broadcasts
+  broadcasts: true
+  # Avisos de "quedan X" antes de que termine el torneo.
+  reminders: [1h, 30m, 10m, 5m, 1m]
+  # Cuantos puestos muestra /pesca top
+  top-size: 10
+  # Si el ganador esta desconectado, el botin se guarda y se entrega al entrar.
+  deliver-loot-on-join: true
+
+# ---------------------------------------------------------------------------
+#  Economia (Vault)
+# ---------------------------------------------------------------------------
+economy:
+  # precio final = precio-por-kg * kg * multiplicador-de-rareza
+  currency-symbol: '$'
+
+# ---------------------------------------------------------------------------
+#  Rarezas
+# ---------------------------------------------------------------------------
+#  points  -> puntos de torneo por captura (SOLO la rareza puntua)
+#  price-multiplier -> multiplica el precio de venta
+# ---------------------------------------------------------------------------
+rarities:
+  comun:
+    display: 'comun'
+    color: '#a8b4b4'
+    points: 1
+    price-multiplier: 1.0
+  poco_comun:
+    display: 'poco comun'
+    color: '#6eff4a'
+    points: 3
+    price-multiplier: 1.15
+  raro:
+    display: 'raro'
+    color: '#55a8ff'
+    points: 8
+    price-multiplier: 1.35
+  epico:
+    display: 'epico'
+    color: '#c154c1'
+    points: 20
+    price-multiplier: 1.6
+  legendario:
+    display: 'legendario'
+    color: '#ffb01f'
+    points: 50
+    price-multiplier: 2.0
+  mitico:
+    display: 'mitico'
+    color: '#ff4f7b'
+    points: 120
+    price-multiplier: 2.5
+
+# ---------------------------------------------------------------------------
+#  Peces
+# ---------------------------------------------------------------------------
+#  chance        -> peso relativo en el sorteo (no hace falta que sumen 100)
+#  kg            -> rango de peso del ejemplar; el peso real se sortea por captura
+#  price-per-kg  -> precio base por kilo, antes del multiplicador de rareza.
+#                   Las especies pequeñas llevan un precio por kilo alto a
+#                   proposito: dentro de una misma rareza todas las especies
+#                   valen algo parecido, para que decida la rareza y no el
+#                   tamaño. Una sardina y un bacalao son ambos comunes.
+#  model-data    -> CustomModelData para el resourcepack (0 = sin modelo)
+# ---------------------------------------------------------------------------
+fish:
+
+  # ---- comun -------------------------------------------------------------
+  sardina:
+    display: 'sardina'
+    rarity: comun
+    material: COD
+    model-data: 1001
+    chance: 110
+    kg: { min: 0.05, max: 0.35 }
+    price-per-kg: 28.0
+  boqueron:
+    display: 'boqueron'
+    rarity: comun
+    material: COD
+    model-data: 1002
+    chance: 105
+    kg: { min: 0.03, max: 0.2 }
+    price-per-kg: 55.0
+  caballa:
+    display: 'caballa'
+    rarity: comun
+    material: COD
+    model-data: 1003
+    chance: 100
+    kg: { min: 0.2, max: 1.2 }
+    price-per-kg: 10.5
+  jurel:
+    display: 'jurel'
+    rarity: comun
+    material: COD
+    model-data: 1004
+    chance: 100
+    kg: { min: 0.3, max: 1.8 }
+    price-per-kg: 7.5
+  carpa:
+    display: 'carpa'
+    rarity: comun
+    material: COD
+    model-data: 1005
+    chance: 95
+    kg: { min: 1.0, max: 6.0 }
+    price-per-kg: 2.6
+  trucha:
+    display: 'trucha'
+    rarity: comun
+    material: SALMON
+    model-data: 1006
+    chance: 95
+    kg: { min: 0.3, max: 2.5 }
+    price-per-kg: 7.0
+  bacalao:
+    display: 'bacalao'
+    rarity: comun
+    material: COD
+    model-data: 1007
+    chance: 90
+    kg: { min: 1.0, max: 8.0 }
+    price-per-kg: 2.5
+  mojarra:
+    display: 'mojarra'
+    rarity: comun
+    material: TROPICAL_FISH
+    model-data: 1008
+    chance: 90
+    kg: { min: 0.1, max: 0.6 }
+    price-per-kg: 37.0
+
+  # ---- poco comun --------------------------------------------------------
+  dorada:
+    display: 'dorada'
+    rarity: poco_comun
+    material: COD
+    model-data: 1101
+    chance: 48
+    kg: { min: 0.4, max: 3.0 }
+    price-per-kg: 12.5
+  lubina:
+    display: 'lubina'
+    rarity: poco_comun
+    material: COD
+    model-data: 1102
+    chance: 46
+    kg: { min: 0.5, max: 4.5 }
+    price-per-kg: 9.0
+  salmonete:
+    display: 'salmonete'
+    rarity: poco_comun
+    material: COD
+    model-data: 1103
+    chance: 45
+    kg: { min: 0.15, max: 0.9 }
+    price-per-kg: 48.0
+  bonito:
+    display: 'bonito'
+    rarity: poco_comun
+    material: COD
+    model-data: 1104
+    chance: 44
+    kg: { min: 1.5, max: 8.0 }
+    price-per-kg: 5.75
+  lucio:
+    display: 'lucio'
+    rarity: poco_comun
+    material: COD
+    model-data: 1105
+    chance: 42
+    kg: { min: 1.0, max: 9.0 }
+    price-per-kg: 5.5
+  anguila:
+    display: 'anguila'
+    rarity: poco_comun
+    material: SALMON
+    model-data: 1106
+    chance: 40
+    kg: { min: 0.3, max: 2.0 }
+    price-per-kg: 27.5
+  salmon:
+    display: 'salmon'
+    rarity: poco_comun
+    material: SALMON
+    model-data: 1107
+    chance: 40
+    kg: { min: 1.0, max: 7.0 }
+    price-per-kg: 8.25
+  tilapia:
+    display: 'tilapia'
+    rarity: poco_comun
+    material: TROPICAL_FISH
+    model-data: 1108
+    chance: 38
+    kg: { min: 0.3, max: 2.0 }
+    price-per-kg: 31.5
+
+  # ---- raro --------------------------------------------------------------
+  rodaballo:
+    display: 'rodaballo'
+    rarity: raro
+    material: COD
+    model-data: 1201
+    chance: 17
+    kg: { min: 1.0, max: 8.0 }
+    price-per-kg: 74.0
+  mero:
+    display: 'mero'
+    rarity: raro
+    material: COD
+    model-data: 1202
+    chance: 16
+    kg: { min: 2.0, max: 20.0 }
+    price-per-kg: 32.5
+  corvina:
+    display: 'corvina'
+    rarity: raro
+    material: COD
+    model-data: 1203
+    chance: 16
+    kg: { min: 1.5, max: 14.0 }
+    price-per-kg: 49.0
+  pargo_rojo:
+    display: 'pargo rojo'
+    rarity: raro
+    material: TROPICAL_FISH
+    model-data: 1204
+    chance: 15
+    kg: { min: 1.0, max: 9.0 }
+    price-per-kg: 85.0
+  raya:
+    display: 'raya'
+    rarity: raro
+    material: COD
+    model-data: 1205
+    chance: 14
+    kg: { min: 3.0, max: 20.0 }
+    price-per-kg: 41.5
+  pez_espada:
+    display: 'pez espada'
+    rarity: raro
+    material: COD
+    model-data: 1206
+    chance: 13
+    kg: { min: 20.0, max: 120.0 }
+    price-per-kg: 7.65
+  dorado:
+    display: 'dorado'
+    rarity: raro
+    material: TROPICAL_FISH
+    model-data: 1207
+    chance: 13
+    kg: { min: 3.0, max: 22.0 }
+    price-per-kg: 46.0
+
+  # ---- epico -------------------------------------------------------------
+  atun_rojo:
+    display: 'atun rojo'
+    rarity: epico
+    material: COD
+    model-data: 1301
+    chance: 4.5
+    kg: { min: 40.0, max: 320.0 }
+    price-per-kg: 9.5
+  marlin_azul:
+    display: 'marlin azul'
+    rarity: epico
+    material: COD
+    model-data: 1302
+    chance: 4.0
+    kg: { min: 60.0, max: 350.0 }
+    price-per-kg: 10.5
+  tiburon_martillo:
+    display: 'tiburon martillo'
+    rarity: epico
+    material: COD
+    model-data: 1303
+    chance: 4.5
+    kg: { min: 40.0, max: 250.0 }
+    price-per-kg: 13.0
+  pez_luna:
+    display: 'pez luna'
+    rarity: epico
+    material: PUFFERFISH
+    model-data: 1304
+    chance: 4.0
+    kg: { min: 60.0, max: 350.0 }
+    price-per-kg: 11.5
+  esturion_beluga:
+    display: 'esturion beluga'
+    rarity: epico
+    material: SALMON
+    model-data: 1305
+    chance: 3.5
+    kg: { min: 50.0, max: 400.0 }
+    price-per-kg: 11.5
+
+  # ---- legendario --------------------------------------------------------
+  celacanto:
+    display: 'celacanto'
+    rarity: legendario
+    material: COD
+    model-data: 1401
+    chance: 1.3
+    kg: { min: 30.0, max: 90.0 }
+    price-per-kg: 132.0
+  pez_remo:
+    display: 'pez remo'
+    rarity: legendario
+    material: COD
+    model-data: 1402
+    chance: 1.2
+    kg: { min: 70.0, max: 270.0 }
+    price-per-kg: 51.0
+  tiburon_duende:
+    display: 'tiburon duende'
+    rarity: legendario
+    material: COD
+    model-data: 1403
+    chance: 1.0
+    kg: { min: 45.0, max: 210.0 }
+    price-per-kg: 76.0
+  calamar_gigante:
+    display: 'calamar gigante'
+    rarity: legendario
+    material: TROPICAL_FISH
+    model-data: 1404
+    chance: 0.9
+    kg: { min: 55.0, max: 275.0 }
+    price-per-kg: 65.0
+
+  # ---- mitico ------------------------------------------------------------
+  leviatan:
+    display: 'leviatan'
+    rarity: mitico
+    material: COD
+    model-data: 1501
+    chance: 0.30
+    kg: { min: 400.0, max: 2000.0 }
+    price-per-kg: 18.0
+  kraken_abisal:
+    display: 'kraken abisal'
+    rarity: mitico
+    material: TROPICAL_FISH
+    model-data: 1502
+    chance: 0.25
+    kg: { min: 500.0, max: 2500.0 }
+    price-per-kg: 16.0
+  sirena_abisal:
+    display: 'sirena de las profundidades'
+    rarity: mitico
+    material: PUFFERFISH
+    model-data: 1503
+    chance: 0.15
+    kg: { min: 20.0, max: 110.0 }
+    price-per-kg: 400.0
+  pez_dorado_ancestral:
+    display: 'pez dorado ancestral'
+    rarity: mitico
+    material: TROPICAL_FISH
+    model-data: 1504
+    chance: 0.10
+    kg: { min: 1.0, max: 5.0 }
+    price-per-kg: 9600.0
+
+# ---------------------------------------------------------------------------
+#  Cebo especial  (cubo de cebo)
+# ---------------------------------------------------------------------------
+#  Con al menos un cubo de cebo en el inventario, cada captura dentro del area
+#  tiene una probabilidad de mejorar: la pieza sube de rareza y gana peso extra.
+#  El cubo solo se gasta cuando el cebo actua de verdad.
+# ---------------------------------------------------------------------------
+bait:
+  # Probabilidad de que el cebo actue: 1 entre N capturas.
+  chance-one-in: 40
+  # Escalones de rareza que sube la pieza (segun el orden de `rarities`).
+  rarity-bump: 1
+  # Peso extra que gana la pieza. 0.35 = +35 %
+  weight-bonus: 0.35
+  # Gastar un cubo cuando actua. Con `false` el cebo es permanente.
+  consume-on-proc: true
+
+# ---------------------------------------------------------------------------
+#  Sedal  (reparacion de cañas)
+# ---------------------------------------------------------------------------
+#  Arrastra el sedal encima de una caña dañada y haz click: la caña recupera
+#  durabilidad y se gasta una unidad de sedal.
+# ---------------------------------------------------------------------------
+repair:
+  # Durabilidad que recupera la caña. 0.25 = 25 % del total.
+  percent: 0.25
+
+# ---------------------------------------------------------------------------
+#  Nombres de encantamientos
+# ---------------------------------------------------------------------------
+#  La tienda oculta el texto vanilla de los encantamientos y dibuja el suyo con
+#  estos nombres, para que no salga el lore duplicado ni en ingles.
+#  Los niveles se escriben en numeros romanos; si el encantamiento solo tiene un
+#  nivel (reparacion) no se escribe ninguno.
+# ---------------------------------------------------------------------------
+enchant-names:
+  LUCK_OF_THE_SEA: 'suerte del mar'
+  LURE: 'atraccion'
+  MENDING: 'reparacion'
+  UNBREAKING: 'irrompibilidad'
+  EFFICIENCY: 'eficiencia'
+  FORTUNE: 'fortuna'
+
+# ---------------------------------------------------------------------------
+#  Tienda  (/pesca shop)
+# ---------------------------------------------------------------------------
+#  slot     -> casilla del inventario (0 a rows*9-1)
+#  material -> item que se vende
+#  amount   -> cantidad por compra
+#  price    -> coste en la economia de Vault
+#  enchants -> opcional, `ENCANTAMIENTO: nivel`
+#  bait     -> marca el item como cebo especial (ver la seccion `bait`)
+#
+#  El lore de precio, encantamientos y cebo se genera solo. En `lore` va unica-
+#  mente la frase de sabor del objeto.
+# ---------------------------------------------------------------------------
+shop:
+  title: 'tienda de pesca'
+  rows: 5
+
+  # Relleno del fondo. AIR para dejarlo vacio.
+  filler: BLACK_STAINED_GLASS_PANE
+  # Panel con el saldo del jugador. -1 para ocultarlo.
+  balance-slot: 4
+  # Boton de venta rapida. -1 para ocultarlo.
+  sell-all-slot: 40
+
+  items:
+    caña_basica:
+      slot: 11
+      material: FISHING_ROD
+      amount: 1
+      price: 250.0
+      name: 'caña basica'
+      lore:
+        - 'para empezar en el muelle'
+
+    caña_experta:
+      slot: 12
+      material: FISHING_ROD
+      amount: 1
+      price: 4500.0
+      name: 'caña experta'
+      lore:
+        - 'la caña de los que viven del mar'
+      enchants:
+        LUCK_OF_THE_SEA: 3
+        LURE: 3
+        MENDING: 1
+
+    cubo_de_cebo:
+      slot: 13
+      material: TROPICAL_FISH_BUCKET
+      amount: 1
+      price: 900.0
+      name: 'cubo de cebo'
+      bait: true
+      lore:
+        - 'carnada viva del arrecife'
+
+    barca:
+      slot: 14
+      material: OAK_BOAT
+      amount: 1
+      price: 120.0
+      name: 'barca'
+      lore:
+        - 'para llegar donde pican los grandes'
+
+    sedal:
+      slot: 15
+      material: STRING
+      amount: 1
+      price: 350.0
+      name: 'sedal de repuesto'
+      repair: true
+      lore:
+        - 'hilo trenzado para el carrete'

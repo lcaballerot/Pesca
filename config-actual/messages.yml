@@ -1,0 +1,279 @@
+# ============================================================================
+#  Pesca — mensajes
+# ============================================================================
+#  Formato de chat MineToy. Escribe en MINUSCULAS NORMALES: el plugin convierte
+#  el texto a versalitas al mostrarlo (`small-caps` en config.yml).
+#
+#  Nunca se convierte:
+#    <etiquetas>     etiquetas de MiniMessage y valores como <jugador>
+#    %placeholders%  de PlaceholderAPI
+#    `entre comillas invertidas`  literales que el jugador teclea (comandos)
+#
+#  Reglas del formato:
+#    - cada color va precedido de <reset> para que la negrita no se filtre
+#    - vuelve a <white> despues de cada valor
+#    - sin mayusculas y sin punto final
+#    - un espacio tras el icono, uno a cada lado del bullet
+#
+#  Colores con significado:
+#    #6d6d6d  estructura (bullets, parentesis, guiones)
+#    #b6d9d8  valor principal (nombres, comandos, objetos)
+#    white    texto de la frase
+#    #c93434  negativo      #6eff4a  positivo
+#    #85bb65  dinero        #fc54fc  duracion
+#    #ffd439  valor secundario (cantidades, puestos, horas)
+# ============================================================================
+
+# Bloque icono + etiqueta + bullet. Se insertan con <pre:nombre>.
+prefixes:
+  pesca: ' 🎣 <reset><#5ec8d8><bold>pesca <reset><#6d6d6d>• '
+  torneo: ' 🏆 <reset><#ffb01f><bold>torneo <reset><#6d6d6d>• '
+  error: ' ✘ <reset><#c93434><bold>error <reset><#6d6d6d>• '
+  banco: ' ⛃ <reset><#85bb65><bold>banco <reset><#6d6d6d>• '
+  sistema: ' ✔ <reset><#fae7b5><bold>sistema <reset><#6d6d6d>• '
+
+# ---------------------------------------------------------------------------
+#  El pez como objeto
+# ---------------------------------------------------------------------------
+item:
+  name: '<pez>'
+  lore:
+    - '<#6d6d6d>rareza <reset><rareza>'
+    - '<#6d6d6d>peso <reset><#ffd439><kg>'
+    - '<#6d6d6d>valor <reset><#85bb65><precio>'
+    - '<barra> <reset><#6d6d6d><trofeo>'
+    - ''
+    - '<#6d6d6d>vale <reset><#b6d9d8><puntos> <reset><#6d6d6d>puntos de torneo'
+    - '<#6d6d6d>pescado por <reset><#b6d9d8><pescador>'
+
+  # Se añade debajo del lore normal solo si el cebo mejoro la pieza.
+  lore-enhanced:
+    - ''
+    - '<#ffd439>✦ <reset><#ffd439>mejorado con cebo'
+    - '<#6d6d6d>subio desde <reset><rareza_base>'
+
+# ---------------------------------------------------------------------------
+#  Pescar
+# ---------------------------------------------------------------------------
+fishing:
+  caught: '<pre:pesca><white>has pescado <reset><pez> <reset><#6d6d6d>de <reset><#ffd439><kg> <reset><#6d6d6d>• <reset><#85bb65><precio>'
+  bait-proc: '<pre:pesca><#ffd439>✦ <reset><white>el cebo ha actuado <reset><#6d6d6d>• <white>sube a <reset><rareza> <reset><white>y gana <reset><#ffd439><bonus> <reset><white>de peso <reset><#6d6d6d>(<reset><#ffd439><restantes> <reset><#6d6d6d>cubos)'
+  total: '<pre:pesca><white>llevas <reset><#b6d9d8><puntos> <reset><white>puntos <reset><#6d6d6d>• <white>vas <reset><#ffd439>#<puesto>'
+  announce: '<pre:pesca><reset><#b6d9d8><jugador> <reset><white>ha sacado <reset><pez> <reset><#6d6d6d>de <reset><#ffd439><kg> <reset><#6d6d6d>(<reset><rareza><reset><#6d6d6d>)'
+
+# ---------------------------------------------------------------------------
+#  Torneo
+# ---------------------------------------------------------------------------
+tournament:
+  start:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:torneo><white>ha empezado el torneo de pesca'
+    - ' <#6d6d6d>• <white>duracion <reset><#fc54fc><duracion>'
+    - ' <#6d6d6d>• <white>pesca en <reset><#b6d9d8>`/warp pesca`'
+    - ' <#6d6d6d>• <white>clasificacion en <reset><#b6d9d8>`/pesca top`'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+  reminder: '<pre:torneo><white>quedan <reset><#fc54fc><tiempo> <reset><white>de torneo'
+
+  forced-stop: '<pre:torneo><white>el torneo se ha cerrado antes de tiempo'
+
+  end-winner:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:torneo><white>torneo terminado'
+    - ' <#6d6d6d>• <white>ganador <reset><#ffb01f><jugador>'
+    - ' <#6d6d6d>• <white>puntos <reset><#b6d9d8><puntos> <reset><#6d6d6d>en <reset><#ffd439><capturas> <reset><#6d6d6d>capturas'
+    - ' <#6d6d6d>• <white>proximo torneo en <reset><#fc54fc><proximo>'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+  end-runner-up: ' <#6d6d6d>• <reset><#6d6d6d><puesto>. <reset><#b6d9d8><jugador> <reset><#6d6d6d>— <reset><#ffd439><puntos> <reset><#6d6d6d>pts'
+
+  end-nobody:
+    - '<pre:torneo><white>el torneo ha terminado sin participantes'
+    - ' <#6d6d6d>• <white>proximo torneo en <reset><#fc54fc><proximo>'
+
+  loot-given: '<pre:torneo><white>has ganado el torneo <reset><#6d6d6d>• <white>aqui tienes tu botin'
+  loot-pending: '<pre:torneo><white>ganaste el torneo mientras no estabas <reset><#6d6d6d>• <white>aqui tienes tu botin'
+
+# ---------------------------------------------------------------------------
+#  Area
+# ---------------------------------------------------------------------------
+area:
+  wand-name: '<reset><#5ec8d8><bold>hacha de area'
+  wand-lore:
+    - '<#6d6d6d>click izquierdo <reset><white>marca una esquina'
+    - '<#6d6d6d>dos esquinas definen la zona de pesca'
+
+  wand-given:
+    - '<pre:sistema><white>toma el hacha de area'
+    - ' <#6d6d6d>• <white>click izquierdo en un bloque para <reset><#b6d9d8>pos1'
+    - ' <#6d6d6d>• <white>click izquierdo en otro para <reset><#b6d9d8>pos2'
+
+  pos1: '<pre:sistema><white>pos1 en <reset><#b6d9d8><x>, <y>, <z>'
+  pos2: '<pre:sistema><white>pos2 en <reset><#b6d9d8><x>, <y>, <z>'
+  saved: '<pre:sistema><white>area guardada en <reset><#b6d9d8><mundo> <reset><#6d6d6d>• <reset><#ffd439><ancho>x<alto>x<largo> <reset><#6d6d6d>(<reset><#ffd439><bloques> <reset><#6d6d6d>bloques)'
+  current: '<pre:sistema><white>area actual <reset><#6d6d6d>• <reset><#b6d9d8><mundo> <reset><#6d6d6d>de <reset><#ffd439><min> <reset><#6d6d6d>a <reset><#ffd439><max> <reset><#6d6d6d>(<reset><#ffd439><bloques> <reset><#6d6d6d>bloques)'
+
+# ---------------------------------------------------------------------------
+#  Interfaces
+# ---------------------------------------------------------------------------
+gui:
+  loot-title: '<#ffb01f>botin del torneo'
+
+  sell-all-name: '<reset><#85bb65><bold>vender todo'
+  sell-all-lore:
+    - '<#6d6d6d>vende todos los peces'
+    - '<#6d6d6d>que lleves encima'
+
+  balance-name: '<reset><#b6d9d8><bold>tu saldo'
+  balance-lore:
+    - '<#85bb65><saldo>'
+
+  # Una linea por encantamiento. El nivel ya viene en numeros romanos.
+  enchant-line: '<#b6d9d8><encantamiento>'
+
+  bait-lore:
+    - '<#ffd439>✦ <reset><#ffd439>cebo especial'
+    - ''
+    - '<#ffd439><probabilidad> <reset><#6d6d6d>de probabilidad de mejorar un pescado'
+    - '<#6d6d6d>sube <reset><#ffd439><escalones> nivel de <reset><#6d6d6d>rareza y suma <reset><#ffd439><bonus> <reset><#6d6d6d>de peso'
+    - '<#6d6d6d>se gasta un cubo solo al actuar'
+    - '<#6d6d6d>uso automatico con tener en el inventario'
+
+  repair-lore:
+    - '<#5ec8d8>✎ <reset><#5ec8d8>repara cañas'
+    - '<#6d6d6d>arrastralo sobre una caña dañada'
+    - '<#6d6d6d>recupera <reset><#ffd439><porcentaje> <reset><#6d6d6d>de durabilidad'
+    - '<#6d6d6d>se gasta una unidad por uso'
+
+  buy-lore:
+    - '<#6d6d6d>precio <reset><#85bb65><precio>'
+    - '<#6d6d6d>cantidad <reset><#ffd439><cantidad>'
+    - '<#6d6d6d>click para comprar'
+
+# ---------------------------------------------------------------------------
+#  Tienda y venta
+# ---------------------------------------------------------------------------
+shop:
+  no-money: '<pre:banco><white>no te llega <reset><#6d6d6d>• <white>cuesta <reset><#85bb65><precio> <reset><white>y tienes <reset><#85bb65><saldo>'
+  full: '<pre:error><white>no te cabe en el inventario'
+  bought: '<pre:banco><white>has comprado <reset><objeto> <reset><#6d6d6d>por <reset><#85bb65><precio>'
+  empty: '<pre:error><white>la tienda no tiene nada configurado'
+
+repair:
+  done: '<pre:sistema><white>caña reparada <reset><#6d6d6d>• <reset><#ffd439><porcentaje> <reset><#6d6d6d>• <white>durabilidad <reset><#ffd439><durabilidad>'
+  not-damaged: '<pre:error><white>esa caña no tiene ningun daño'
+  single-only: '<pre:error><white>separa la caña del monton antes de repararla'
+
+sell:
+  usage: '<pre:error><white>usa <reset><#b6d9d8>`/pesca sell hand` <reset><#6d6d6d>o <reset><#b6d9d8>`/pesca sell all`'
+  nothing: '<pre:error><white>no llevas peces del que vender'
+  done: '<pre:banco><white>has vendido <reset><#ffd439><cantidad> <reset><white>peces por <reset><#85bb65><total>'
+
+# ---------------------------------------------------------------------------
+#  Clasificacion
+# ---------------------------------------------------------------------------
+top:
+  header-live:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:torneo><white>clasificacion <reset><#6d6d6d>• <white>quedan <reset><#fc54fc><tiempo>'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+  header-last:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:torneo><white>no hay torneo activo <reset><#6d6d6d>• <white>el proximo sera en <reset><#fc54fc><proximo>'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+  none:
+    - '<pre:torneo><white>todavia no se ha jugado ningun torneo'
+    - ' <#6d6d6d>• <white>el proximo empieza en <reset><#fc54fc><proximo>'
+
+  empty: ' <#6d6d6d>• <white>nadie ha pescado todavia'
+
+  entry-1: ' <#ffb01f>1. <reset><#ffb01f><jugador> <reset><#6d6d6d>— <reset><#b6d9d8><puntos> <reset><#6d6d6d>pts <reset><#6d6d6d>• <reset><#ffd439><record>'
+  entry-2: ' <#cecece>2. <reset><#cecece><jugador> <reset><#6d6d6d>— <reset><#b6d9d8><puntos> <reset><#6d6d6d>pts <reset><#6d6d6d>• <reset><#ffd439><record>'
+  entry-3: ' <#c98a4b>3. <reset><#c98a4b><jugador> <reset><#6d6d6d>— <reset><#b6d9d8><puntos> <reset><#6d6d6d>pts <reset><#6d6d6d>• <reset><#ffd439><record>'
+  entry: ' <#6d6d6d><puesto>. <reset><#b6d9d8><jugador> <reset><#6d6d6d>— <reset><#b6d9d8><puntos> <reset><#6d6d6d>pts <reset><#6d6d6d>• <reset><#ffd439><record>'
+
+  you: '<pre:pesca><white>vas <reset><#ffd439>#<puesto> <reset><#6d6d6d>• <reset><#b6d9d8><puntos> <reset><white>puntos en <reset><#ffd439><capturas> <reset><white>capturas'
+  you-unranked: '<pre:pesca><white>aun no has pescado nada en este torneo'
+
+# ---------------------------------------------------------------------------
+#  Ayuda
+# ---------------------------------------------------------------------------
+help:
+  player:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:pesca><white>comandos'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca top` <reset><#6d6d6d>— <white>clasificacion del torneo'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca shop` <reset><#6d6d6d>— <white>tienda de pesca'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca sell hand` <reset><#6d6d6d>— <white>vende el pez de la mano'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca sell all` <reset><#6d6d6d>— <white>vende todos tus peces'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    
+
+  admin:
+    - ''
+    - ' <reset><#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin loot` <reset><#6d6d6d>— <white>botin del ganador'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin setarea` <reset><#6d6d6d>— <white>define la zona de pesca'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin area` <reset><#6d6d6d>— <white>muestra la zona actual'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin duration` <reset><#6d6d6d>`1h` / `1d` / `1w`'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin frequency` <reset><#6d6d6d>`1h` / `1d` / `1w`'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin forcestart` <reset><#6d6d6d>— <white>empieza el torneo ya'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin forcestop` <reset><#6d6d6d>— <white>lo cierra y reinicia el contador'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin broadcasts` <reset><#6d6d6d>`true` / `false` / `debug`'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin info` <reset><#6d6d6d>— <white>estado del plugin'
+    - ' <#6d6d6d>• <reset><#b6d9d8>`/pesca admin reload`'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+# ---------------------------------------------------------------------------
+#  Administracion
+# ---------------------------------------------------------------------------
+admin:
+  loot-saved: '<pre:sistema><white>botin guardado <reset><#6d6d6d>• <reset><#ffd439><cantidad> <reset><white>objetos'
+  loot-empty-warning: '<pre:error><white>el botin esta vacio <reset><#6d6d6d>• <white>configuralo con <reset><#b6d9d8>`/pesca admin loot`'
+
+  duration-usage: '<pre:error><white>usa <reset><#b6d9d8>`/pesca admin duration 1d` <reset><#6d6d6d>• <white>ahora es <reset><#fc54fc><actual>'
+  duration-set: '<pre:sistema><white>duracion del torneo <reset><#fc54fc><duracion>'
+  duration-applied: '<pre:sistema><white>el torneo en curso termina en <reset><#fc54fc><tiempo>'
+
+  frequency-usage: '<pre:error><white>usa <reset><#b6d9d8>`/pesca admin frequency 1d` <reset><#6d6d6d>• <white>ahora es <reset><#fc54fc><actual>'
+  frequency-set: '<pre:sistema><white>frecuencia entre torneos <reset><#fc54fc><frecuencia>'
+  next-in: '<pre:sistema><white>proximo torneo en <reset><#fc54fc><tiempo>'
+
+  not-running: '<pre:error><white>no hay ningun torneo en curso'
+  already-running: '<pre:error><white>ya hay un torneo en curso <reset><#6d6d6d>• <white>quedan <reset><#fc54fc><tiempo>'
+  forced-stop: '<pre:sistema><white>torneo cerrado <reset><#6d6d6d>• <white>el proximo empieza en <reset><#fc54fc><tiempo>'
+  forced-start: '<pre:sistema><white>torneo iniciado <reset><#6d6d6d>• <white>durara <reset><#fc54fc><duracion>'
+  no-area: '<pre:error><white>no hay zona de pesca definida <reset><#6d6d6d>• <white>usa <reset><#b6d9d8>`/pesca admin setarea`'
+
+  broadcasts-usage: '<pre:error><white>usa <reset><#b6d9d8>`/pesca admin broadcasts true|false|debug` <reset><#6d6d6d>• <white>ahora es <reset><#b6d9d8><actual>'
+  broadcasts-true: '<pre:sistema><white>anuncios <reset><#6eff4a>activados <reset><#6d6d6d>• <white>los ve todo el servidor'
+  broadcasts-false: '<pre:sistema><white>anuncios <reset><#c93434>desactivados <reset><#6d6d6d>• <white>el torneo sigue corriendo en silencio'
+  broadcasts-debug-on: '<pre:sistema><white>anuncios en modo <reset><#ffd439>debug <reset><#6d6d6d>• <white>solo los veras tu <reset><#6d6d6d>(<reset><#ffd439><total> <reset><#6d6d6d>en total)'
+  broadcasts-debug-off: '<pre:sistema><white>ya no recibes los anuncios de debug <reset><#6d6d6d>• <reset><#ffd439><total> <reset><#6d6d6d>siguen activos'
+
+  reloaded: '<pre:sistema><white>configuracion recargada <reset><#6d6d6d>• <reset><#ffd439><peces> <reset><white>peces'
+
+  info:
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+    - '<pre:sistema><white>estado de pesca'
+    - ' <#6d6d6d>• <white>torneo <reset><#b6d9d8><estado> <reset><#6d6d6d>• <reset><#fc54fc><tiempo>'
+    - ' <#6d6d6d>• <white>duracion <reset><#fc54fc><duracion> <reset><#6d6d6d>• <white>frecuencia <reset><#fc54fc><frecuencia>'
+    - ' <#6d6d6d>• <white>anuncios <reset><#b6d9d8><anuncios> <reset><#6d6d6d>• <white>en debug <reset><#ffd439><debug>'
+    - ' <#6d6d6d>• <white>botin <reset><#ffd439><botin> <reset><white>objetos <reset><#6d6d6d>• <white>peces <reset><#ffd439><peces>'
+    - ' <#6d6d6d>• <white>participantes <reset><#ffd439><participantes>'
+    - ' <#6d6d6d>• <white>economia <reset><#b6d9d8><economia>'
+    - ' <#6d6d6d>• <white>zona <reset><#b6d9d8><area>'
+    - ' <#6d6d6d>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
+# ---------------------------------------------------------------------------
+#  Errores
+# ---------------------------------------------------------------------------
+error:
+  no-permission: '<pre:error><white>no tienes permiso para hacer eso'
+  players-only: '<pre:error><white>esto solo lo puede usar un jugador'
+  no-economy: '<pre:error><white>no hay economia disponible en el servidor'
+  transaction: '<pre:error><white>la transaccion ha fallado'
+  inventory-full: '<pre:error><white>necesitas un hueco libre en el inventario'
+  bad-duration: '<pre:error><reset><#b6d9d8><valor> <reset><white>no es una duracion valida <reset><#6d6d6d>• <white>usa <reset><#b6d9d8>`1h` `2d` `1w`'

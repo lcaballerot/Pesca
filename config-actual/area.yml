@@ -1,0 +1,10 @@
+area:
+  world: spawns
+  min:
+    x: 1057
+    y: 124
+    z: 847
+  max:
+    x: 1158
+    y: 279
+    z: 985

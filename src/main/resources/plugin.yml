@@ -1,0 +1,24 @@
+name: Pesca
+version: ${project.version}
+main: com.minetoy.pesca.PescaPlugin
+api-version: '1.21'
+authors: [MineToy]
+description: Torneos de pesca con peces personalizados, rareza, peso y tienda.
+softdepend: [Vault]
+
+libraries:
+  - org.xerial:sqlite-jdbc:3.46.1.3
+
+commands:
+  pesca:
+    description: Comando principal del sistema de pesca.
+    usage: /pesca
+    aliases: [fishing, pescar]
+
+permissions:
+  pesca.use:
+    description: Acceso a /pesca top, shop y sell.
+    default: true
+  pesca.admin:
+    description: Acceso a /pesca admin.
+    default: op
